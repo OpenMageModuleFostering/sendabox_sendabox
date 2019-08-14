@@ -1,0 +1,19 @@
+<?xml version="1.0"?> 
+<!-- 
+/** 
+ * Module initial config 
+ * 
+ * @author Italmondo S.p.a. 
+ */ 
+--> 
+<config> 
+    <modules> 
+		<Sendabox_Sendabox> 
+            <active>true</active> 
+            <codePool>community</codePool>
+			<depends>
+                <Mage_Shipping /> 
+            </depends>
+        </Sendabox_Sendabox> 
+    </modules> 
+</config> 

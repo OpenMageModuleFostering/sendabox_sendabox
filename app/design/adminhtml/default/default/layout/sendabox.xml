@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<layout>
+
+    <sendabox_adminhtml_shipment_index>
+        
+        <reference name="content">
+            <block type="sendabox_sendabox/adminhtml_shipment">
+                <block type="sendabox_sendabox/adminhtml_shipment_grid" />
+            </block>
+        </reference>
+    </sendabox_adminhtml_shipment_index>
+    
+	<sendabox_adminhtml_shipment_edit>
+        <reference name="head">
+			<action method="addCss"><stylesheet>sendabox/sendabox.css</stylesheet></action>
+		</reference>
+        <reference name="content">
+            <block type="sendabox_sendabox/adminhtml_shipment_edit" name="sendabox_shipment_edit" />
+        </reference>
+        <reference name="left">
+            <block type="sendabox_sendabox/adminhtml_shipment_edit_tabs" name="sendabox_shipment_edit_tabs">
+                <action method="addTab">
+                    <name>sendabox_shipment_edit_tab_form</name>
+                    <block>sendabox_sendabox/adminhtml_shipment_edit_tab_form</block>
+                </action>
+            </block>
+        </reference>
+    </sendabox_adminhtml_shipment_edit>
+    
+	<adminhtml_system_config_edit>
+		<reference name="head">
+			<action method="addCss"><stylesheet>sendabox/sendabox.css</stylesheet></action>
+			<action method="addJs"><script>sendabox/autocomplete.js</script></action>
+		</reference>
+	</adminhtml_system_config_edit>
+</layout>

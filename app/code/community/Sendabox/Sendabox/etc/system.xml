@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sections>
+        <carriers translate="label" module="shipping">
+            <groups>
+                <sendabox_sendabox translate="label">
+                    <label>Sendabox</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <!--
+                            The following fields are available
+                            to modify in the admin panel.
+                            The values are saved in the
+                            database.
+
+                            This shipping carrier abstract checks
+                            this value to determine whether
+                            the carrier should be shown.
+                        -->
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </active>
+                        <!--
+                            This value can be used to specify a
+                            custom title for our method.
+                        -->
+                        <!--<title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>-->
+                        <!--
+                            The sort order is used in Magento
+                            to determine what order the carrier
+                            will appear in relative to the
+                            other carriers available.
+                        -->
+                        <!--<sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sort_order>-->
+                        <!--
+                            This value is used to specify whether
+                            the carrier is available only for
+                            specific countries or all countries
+                            available in the current Magento
+                            installation.
+                        -->
+                        <sallowspecific translate="label">
+                            <label>Ship to Applicable Countries</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>90</sort_order>
+                            <frontend_class>shipping-applicable-country</frontend_class>
+                            <source_model>adminhtml/system_config_source_shipping_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </sallowspecific>
+                        <!--
+                            If 'specific countries' is chosen
+                            in the previous option, then this field
+                            allows the administrator to specify
+                            which specific countries this carrier
+                            should be available for.
+                        -->                   
+                        <specificcountry translate="label">
+                            <label>Ship to Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>91</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <can_be_empty>1</can_be_empty>
+                        </specificcountry>
+						<free_shipping_enable translate="label">
+                            <label>Free Shipping with Minimum Order Amount</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </free_shipping_enable>
+                        <free_shipping_subtotal translate="label">
+                            <label>Minimum Order Amount for Free Shipping</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </free_shipping_subtotal>
+                        <allowed_methods translate="label">
+                            <label>Allowed Carriers</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <!--<config_path>carriers/sendabox/allowed_methods</config_path>-->
+                            <sort_order>70</sort_order>
+                            <source_model>sendabox_sendabox/shipping_carrier_sendabox_source_method</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Use CTRL + click to select multiple carriers.]]></comment>
+                        </allowed_methods>
+                    </fields>
+                </sendabox_sendabox>
+            </groups>
+        </carriers>
+		<sendabox_options translate="label" module="sendabox_sendabox">
+			<label>Sendabox Settings</label>    
+            <tab>sales</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>321</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <frontend_model>sendabox_sendabox/adminhtml_system_config_form_fieldset_general</frontend_model>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>
+                        <![CDATA[
+                            <div style="padding:10px;background-color:#fff;border:1px solid #ddd;margin-bottom:7px;">
+								Get your API Key and API Password from the profile page of your Sendabox.it account,
+                                if you don't have one, you can <a href="https://www.sendabox.it" target="_blank">Sign Up</a> immediately.
+                            </div>
+                        ]]>
+                    </comment>
+                    <fields>
+                        <!--<client>
+                            <label>Client ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </client>-->
+                        <username translate="label">
+                            <label>API Key</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Insert "test" for a test of the extension]]></comment>
+                        </username>
+                        <password translate="label">
+                            <label>API Password</label>
+                            <frontend_type>password</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment><![CDATA[Insert "test" for a test of the extension]]></comment>
+                        </password>
+						<payment_type translate="label">
+                            <label>Payment Type</label>
+                            <frontend_type>label</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Please ensure you have sufficient credit in your Sendabox account]]></comment>
+                        </payment_type>
+						<credits translate="label">
+							<label>Remaining Credits</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+						</credits>
+                    </fields>
+                </general>
+                <!--<insurance translate="label">
+                    <label>Insurance</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <status translate="label">
+                            <label>Insurance</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_insurance</frontend_model>
+                            <sort_order>10</sort_order>
+                            <source_model>sendabox_sendabox/system_config_source_insurance</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[
+                                    Disabled - This option is unavailable to users.<br/>
+                                    Optional - The option is presented during checkout.<br/>
+                                    Mandatory - Insurance must be added to all orders.
+                                ]]>
+                            </comment>
+                        </status>
+                    </fields>
+                </insurance>-->
+                <pricing translate="label">
+                    <label>Pricing</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <method translate="label">
+                            <label>Pricing Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>sendabox_sendabox/system_config_source_pricing</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[
+                                    <strong>Free Shipping</strong> - no charge to customer.<br/>
+                                    <strong>Fixed Price / Flat Rate</strong> - customer always pays the amount set in "Shipping Price" below.<br/>
+                                    <strong>Dynamic Pricing</strong><br/>
+                                    - <strong>All</strong>: All quotes from carriers in "allowed carriers" are shown for the customer to choose from.<br/>
+                                ]]>
+                            </comment>
+                        </method>
+                        <shipping_fee translate="label">
+                            <label>Shipping Price</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </shipping_fee>
+<!--                        <handling_fee translate="label">
+                            <label>Handling Fee / Markup</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </handling_fee>
+                        <handling_type translate="label">
+                            <label>Handling Fee Calculation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>shipping/source_handlingType</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </handling_type>-->
+                    </fields>
+                </pricing>
+                <units translate="label">
+                    <label>Units</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <measure translate="label">
+                            <label>Measure Unit</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>sendabox_sendabox/system_config_source_unit_measure</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[The units used for product measurements]]></comment>
+                        </measure>
+                        <weight translate="label">
+                            <label>Weight Unit</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>sendabox_sendabox/system_config_source_unit_weight</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[The units used for product weights]]></comment>
+                        </weight>
+                    </fields>
+                </units>
+                <defaults translate="label">
+                    <label>Packaging</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment><![CDATA[Default values will be used for all products that do not have product specific dimensions.]]></comment>
+                    <fields>
+                        <length translate="label">
+                            <label>Length</label>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </length>
+                        <width translate="label">
+                            <label>Width</label>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </width>
+                        <height translate="label">
+                            <label>Height</label>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[If unknown use 10x10x10]]></comment>
+                        </height>
+                    </fields>
+                </defaults>
+                <origin translate="label">
+                    <label>Stock origin (warehouse) details</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>80</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <comment><![CDATA[Please enter the details of your pick-up location for all products.]]></comment>
+                    <fields>
+                        <contact_name translate="label">
+                            <label>Name</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </contact_name>
+                        <contact_surname translate="label">
+                            <label>Surname</label>
+                            <frontend_type>text</frontend_type>
+							<frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </contact_surname>
+                        <street translate="label">
+                            <label>Street</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </street>
+						<number translate="label">
+                            <label>Number</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </number>
+						<c_o translate="label">
+                            <label>C/O</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </c_o>
+                        <city translate="label">
+                            <label>City</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<comment>
+							<![CDATA[<div id="autocompleter_city_origin" class="ddl_city"></div>]]>
+							</comment>
+                        </city>
+						<city_id translate="label">
+                            <label>City Id</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<comment><![CDATA[Inserted automatically after choosing the city. Do not modify it]]></comment>
+                        </city_id>
+                        <postcode translate="label">
+                            <label>Postcode</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<validate>validate-zip</validate>
+                        </postcode>
+                        <phone translate="label">
+                            <label>Phone </label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <backend_model>sendabox_sendabox/system_config_backend_form_field_required_text</backend_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </phone>
+                        <email translate="label">
+                            <label>Email</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>sendabox_sendabox/adminhtml_system_config_form_field_required</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<validate>validate-email</validate>
+                        </email>
+						<notes translate="label">
+                            <label>Notes</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+							<validate>validate-length maximum-length-60</validate>
+							<comment><![CDATA[Please, do not use more than 60 characters]]></comment>
+                        </notes>
+                    </fields>
+                </origin>
+            </groups>
+		</sendabox_options>
+    </sections>
+</config>

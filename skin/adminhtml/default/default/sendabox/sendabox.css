@@ -1,0 +1,22 @@
+div.ddl_city {
+  position:absolute;
+  border:1px solid #888;
+  background-color: #fff;
+  z-index: 15;
+  margin:0;
+  padding:0;
+}
+div.ddl_city ul {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+}
+div.ddl_city ul li.selected { background-color: #edf7fd;}
+div.ddl_city ul li {
+  list-style-type:none;
+  display:block;
+  margin:0;
+  padding:2px;
+  line-height:1.5;
+  cursor:pointer;
+}

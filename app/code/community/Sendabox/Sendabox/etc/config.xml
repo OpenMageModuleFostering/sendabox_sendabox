@@ -1,0 +1,168 @@
+<config>
+    <modules>
+        <Sendabox_Sendabox>
+            <version>1.0.0</version>
+        </Sendabox_Sendabox>
+    </modules>
+    <global>
+        <models>
+            <sendabox_sendabox>
+                <class>Sendabox_Sendabox_Model</class>
+				<resourceModel>sendabox_resource</resourceModel>
+            </sendabox_sendabox>
+			<sendabox_resource>
+				<class>Sendabox_Sendabox_Model_Resource</class>
+				<entities>
+					<box><table>sendabox_box</table></box>
+                    <quote><table>sendabox_quote</table></quote>
+                    <shipment><table>sendabox_shipment</table></shipment>
+                    <carrier><table>sendabox_carrier</table></carrier>
+				</entities>
+			</sendabox_resource>
+        </models>
+		<helpers>
+			<sendabox_sendabox>
+				<class>Sendabox_Sendabox_Helper</class>
+			</sendabox_sendabox>
+		</helpers>
+		<blocks>
+			<sendabox_sendabox>
+				<class>Sendabox_Sendabox_Block</class>
+			</sendabox_sendabox>
+		</blocks>
+		<resources> 
+            <sendabox_sendabox_setup> 
+                <setup> 
+                    <module>Sendabox_Sendabox</module> 
+                    <class>Mage_Eav_Model_Entity_Setup</class> 
+                </setup>
+				<connection>
+                    <use>core_setup</use>
+                </connection>
+            </sendabox_sendabox_setup>
+			<sendabox_sendabox_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </sendabox_sendabox_write>
+            <sendabox_sendabox_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </sendabox_sendabox_read>
+        </resources>
+		<sales>
+            <shipping>
+                <carriers>
+                    <sendabox_sendabox>
+                        <class>Sendabox_Sendabox_Model_Shipping_Carrier_Sendabox</class>
+                    </sendabox_sendabox>
+                </carriers>
+            </shipping>
+        </sales>
+		<events>
+			<sales_order_place_after>
+                <observers>
+                    <sendabox_sendabox_sales_order_place_after_handler>
+                        <type>model</type>
+                        <class>Sendabox_Sendabox_Model_Observer</class>
+                        <method>createSendaboxShipment</method>
+                    </sendabox_sendabox_sales_order_place_after_handler>
+                </observers>
+            </sales_order_place_after>
+        </events>
+    </global>
+	<admin>
+        <routers>
+            <sendabox>
+                <use>admin</use>
+                <args>
+                    <module>Sendabox_Sendabox</module>
+                    <frontName>sendabox</frontName>
+                </args>
+            </sendabox>
+        </routers>
+    </admin>
+	<adminhtml>
+		<events> 
+            <controller_action_layout_generate_blocks_after>
+                <observers>
+                    <sendabox_sendabox_addjs>
+                        <type>singleton</type>
+                        <class>sendabox_sendabox/observer</class>
+                        <method>addJavascriptBlock</method>
+                    </sendabox_sendabox_addjs>
+                </observers>
+            </controller_action_layout_generate_blocks_after>
+        </events>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <sendabox_options>
+                                            <title>Sendabox Section</title>
+                                        </sendabox_options>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+		<layout>
+            <updates>
+                <sendabox>
+                    <file>sendabox.xml</file>
+                </sendabox>
+            </updates>
+        </layout>
+    </adminhtml>
+    <!-- Default configuration -->
+    <default>
+        <carriers>
+            <sendabox_sendabox>
+                <active>1</active>
+                <!--
+                     This configuration should not be made visible
+                     to the administrator, because it specifies
+                     the model to be used for this carrier.
+                -->
+                <model>sendabox_sendabox/shipping_carrier_sendabox</model>
+                <!--
+                    The title as referenced in the carrier class
+                -->
+                <title>Sendabox - Confronta e spedisci a prezzi imbattibili</title>
+                <!--
+                    The sort order specifies the position that
+                    this carrier appears relative to the other
+                    carriers available in checkout.
+                -->
+                <sort_order>10</sort_order>
+                <!--
+                    Out of the box, Magento offers shipping
+                    carriers the ability to restrict themselves
+                    to specific countries. For this configuration
+                    option, 0 means allow all countries available,
+                    and 1 means allow all countries specified
+                    in the country list that we will add later
+                    in system.xml
+                -->
+                <sallowspecific>0</sallowspecific>
+				<!--
+					Inserimenti miei
+				-->
+				<!--<specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this shipping method, please contact us.</specificerrmsg>-->
+            </sendabox_sendabox>
+        </carriers>
+		<sendabox_options>
+			<general>
+				<payment_type>Credits</payment_type>
+			</general>
+		</sendabox_options>
+    </default>
+</config>
