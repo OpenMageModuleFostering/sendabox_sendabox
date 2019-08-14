@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    //<![CDATA[
+    function check() {
+        new Ajax.Request('<?php echo $this->getAjaxCheckUrl() ?>', {
+            method:     'post',
+            onSuccess: function(data){
+
+                var json = data.responseText;
+                if (json !== "Contacts inserted successfully") {
+                    alert(json);
+                    return null;
+                }
+
+                alert(json);
+            }
+        });
+    }
+    //]]>
+</script>
+
+<?php echo $this->getButtonHtml() ?>

@@ -1,0 +1,204 @@
+<?php $_order = $this->getOrder();$_order_details = $this->getOrderDetails(); $_order_boxes = $this->getOrderBoxes();$box=1;?>
+<div class="entry-edit">
+    <div></div><span class="field-row">
+<span id="box_shiiping_from"><div class="box-left">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">Departure Information</h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset " id="shipping_fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tbody>
+                    <tr>
+                        <td class="label"><label>Shipping Name</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_name ?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping Surname</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_surname ?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping CO</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_at?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping Address</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_street?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping Street Number</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_number?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping City/Province</td>
+                        <td class="label"><label><?php echo $_order->shipping_city?></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping Zip</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_postcode?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping Telephone</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_phone?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Shipping email</label></td>
+                        <td class="label"><label><?php echo $_order->shipping_email?></label></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+<span class="field-row">
+<span id=""></span></span></div></span></span>
+<span class="field-row">
+<span id="box_shiiping_to"><div class="box-right">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-edit-form fieldset-legend">Destination Information</h4>
+            <div class="form-buttons"></div>
+        </div>
+        <div class="fieldset " id="destination_fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tbody>
+                    <tr>
+                        <td class="label"><label>Destination Name</label></td>
+                        <td class="label"><label><?php echo $_order->destination_name?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination Surname</label></td>
+                        <td class="label"><label><?php echo $_order->destination_surname?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination CO</label></td>
+                        <td class="label"><label><?php echo $_order->destination_at?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination Address</label></td>
+                        <td class="label"><label><?php echo $_order->destination_street?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination Street Number</label></td>
+                        <td class="label"><label><?php echo $_order->destination_number?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination City/Province</label></td>
+                        <td class="label"><label><?php echo $_order->destination_city?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination Zip</label></td>
+                        <td class="label"><label><?php echo $_order->destination_postcode?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination Telephone</label></td>
+                        <td class="label"><label><?php echo $_order->destination_phone?></label></td>
+                    </tr>
+                    <tr>
+                        <td class="label"><label>Destination email</label></td>
+                        <td class="label"><label><?php echo $_order->destination_email?></label></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+<span class="field-row">
+<span id="close_destination"></span></span></div></span></span>
+    </div>
+<br />
+
+<div class="clear"></div>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-products">Order Details</h4>
+        <div class="form-buttons"></div>
+    </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tbody>
+                    <?php foreach($_order_details as $order): ?>
+                        <tr>
+                            <td class="label" colspan="2"><label><strong>Box <?php echo $box++ ?></strong></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Order Number</label></td>
+                            <td class="label"><label><?php  echo $order["Order"]["idusercityorder"] ?></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Shipping Document</label></td>
+                            <td class="label"><label><a href="http://sendabox.it/<?php echo $order["Order"]["carrier"]?>Trasporto/Index/<?php echo $order["Order"]["logs"] ?>" target="_blank">Link</a></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Order Date</label></td>
+                            <td class="label"><label><?php preg_match( "#/Date\((\d{10})\d{3}(.*?)\)/#", $order["Order"]["orderdate"], $match );
+                                    echo date( 'd-m-Y H:i:s', $match[1] );?></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Tracking Link</label></td>
+                            <td class="label"><label><a href="http://sendabox.it/Trackings/Index/<?php echo $order["Order"]["logs"] ?>" target="_blank">http://sendabox.it/Trackings/Index/<?php echo $order["Order"]["logs"];?></a></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Carrier</label></td>
+                            <td class="label"><label><?php echo $order["Order"]["carrier"]?></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Carrier Status</label></td>
+                            <td class="label"><label><?php echo strpos($order["Order"]["senttocarrierstatus"],"SENT")===0?"Ordine trasmesso al corriere":"Ordine in lavorazione"?></label></td>
+                        </tr>
+                        <?php if(strpos($order["Order"]["senttocarrierstatus"],"SENT")===0): ?>
+                        <tr>
+                            <td class="label"><label>Sent to carrier on</label></td>
+                            <td class="label"><label><?php preg_match( "#/Date\((\d{10})\d{3}(.*?)\)/#", $order["Order"]["senttocarrieron"], $match );
+                                    echo date( 'd-m-Y H:i:s', $match[1] ) ?></label></td>
+                        </tr>
+                        <?php endif ?>
+                        <tr>
+                            <td class="label"><label>Dimensions</label></td>
+                            <td class="label"><label><?php echo $order["Order"]["width"].'cm x '.$order["Order"]["height"].'cm x '.$order["Order"]["depth"].'cm'  ?></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Weight</label></td>
+                            <td class="label"><label><?php echo $order["Order"]["weight"].'kg'?></label></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><label>Total</label></td>
+                            <td class="label"><label><?php echo $order["Order"]["orderprice"].'€'?></label></td>
+                        </tr>
+                        <?php if(count($order["Services"])>0): ?>
+                            <tr>
+                                <td class="label"><label>Services added</label></td>
+                                <td>
+                                    <div class="grid np">
+                                        <div class="hor-scroll">
+                                            <table cellspacing="0" class="data order-tables" id="boxes">
+                                                <thead>
+                                                    <tr class="headings">
+                                                        <th>Service</th>
+                                                        <th>Price</th>
+                                                        <th>Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                 <?php foreach($order["Services"] as $service): ?>
+                                                 <tr>
+                                                    <td><?php echo $service["Service"] ?></td>
+                                                    <td><?php echo $service["Cost"] ?></td>
+                                                    <td><?php echo $service["Value"] ?></td>
+                                                </tr>
+                                                <?php endforeach ?>
+                                                </tbody>
+                                                </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+</div>

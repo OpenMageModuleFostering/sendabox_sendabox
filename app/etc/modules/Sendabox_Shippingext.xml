@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Sendabox_Shippingext>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Shipping/>
+            </depends>
+        </Sendabox_Shippingext>
+    </modules>
+</config>

@@ -1,0 +1,594 @@
+<?php $_order = $this->getOrder();$_orderqty=0;  ?>
+<input type="hidden" name="boxes">
+<input type="hidden" name="orderid" value="<?php echo $_order->getRealOrderId() ?>" readonly>
+<div class="grid np">
+    <div class="hor-scroll">
+        <table cellspacing="0" class="data order-tables">
+
+            <thead>
+            <tr class="headings">
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Sku') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Product name') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Total Weight') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Qty') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Total Price') ?></th>
+
+            </tr>
+            </thead>
+            <?php $_items = $_order->getAllItems()  ?>
+            <tbody>
+            <?php $i=0;foreach ($_items as $_item):?>
+                <?php if ($_item->getParentItem()) continue; else $i++;?>
+                <tr>
+                <td><?php echo  $_item->sku ?></td>
+                <td><?php echo  $_item->getName() ?></td>
+                <td><?php echo  number_format($_item->getWeight()*$_item->getQtyOrdered(),2) ?></td>
+                <td><?php $_orderqty+=$_item->getQtyOrdered(); echo  number_format($_item->getQtyOrdered(),0) ?></td>
+                <td><?php echo  Mage::helper('core')->currency($_item->getRowTotalInclTax(), true, false) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            <tr>
+                <td><b>Total</b></td>
+                <td></td>
+                <td><?php echo  number_format($_order->getWeight(),2) ?></td>
+                <td><?php echo  number_format($_orderqty,0) ?></td>
+                <td><?php echo  Mage::helper('core')->currency($_order->getGrandTotal()-$_order->getShippingAmount(), true, false)?></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+
+<div class="clear"></div>
+
+
+    <div class="entry-edit">
+    <div class="entry-edit-head">
+       <h4 class="icon-head head-products"><?php echo $this->helper('sendabox_shippingext')->__('Package order details') ?></h4>
+       <button id="addBox" onclick="addBox()" title="<?php echo $this->helper('sendabox_shippingext')->__('Add another box') ?>" type="button" class="scalable save f-right" style=""><span><span><span><?php echo $this->helper('sendabox_shippingext')->__('Add another box') ?></span></span></span></button>
+
+    </div>
+    </div>
+<div class="grid np">
+    <div class="hor-scroll">
+        <table cellspacing="0" class="data order-tables" id="boxes">
+
+            <thead>
+            <tr class="headings">
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Box #') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Width') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Height') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Depth') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Weight') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Products in this box') ?></th>
+                <th><?php echo $this->helper('sendabox_shippingext')->__('Remove') ?></th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr id="box-1">
+                    <td>Box 1</td>
+                    <td><input class="input-text" type="number" id="width-1" name="width-1" ></td>
+                    <td><input class="input-text" type="number" id="height-1" name="height-1" ></td>
+                    <td><input class="input-text" type="number" id="depth-1" name="depth-1" ></td>
+                    <td><input class="input-text" type="number" id="weight-1" name="weight-1" ></td>
+                    <td>
+                        <table>
+                            <thead>
+                            <th><?php echo $this->helper('sendabox_shippingext')->__('Select') ?></th>
+                            <th><?php echo $this->helper('sendabox_shippingext')->__('Sku') ?></th>
+                            <th><?php echo $this->helper('sendabox_shippingext')->__('Product') ?></th>
+                            <th><?php echo $this->helper('sendabox_shippingext')->__('Quantity') ?></th>
+                            </thead>
+                            <?php $i=0;foreach ($_items as $_item):
+                                ?>
+                                <?php if ($_item->getParentItem()) continue; else $i++;?>
+                                <tr>
+                                    <td><input type="checkbox" class="box-1-item-<?php echo $_item->sku; ?>-checkbox" disabled></td>
+                                    <td><?php echo  $_item->sku ?></td>
+                                    <td><?php echo  $_item->getName() ?></td>
+                                    <td>
+                                        <input type="hidden" id="item-<?php echo $_item->sku; ?>-qty" value="<?php echo $_item->getQtyOrdered() ?>">
+                                        <select class="box-1-item-<?php echo $_item->sku; ?>" onchange="adjustQuantities(1,'<?php echo $_item->sku; ?>')">
+                                            <?php for($j=0;$j<=$_item->getQtyOrdered();$j++){ ?>
+                                            <option value="<?php echo $j; ?>"><?php echo $j; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        / <?php echo number_format($_item->getQtyOrdered(),0) ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="clear"></div>
+<br>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-products"><?php echo $this->helper('sendabox_shippingext')->__('Available carriers') ?></h4>
+        <button id="unblock" onclick="unblock()" title="<?php echo $this->helper('sendabox_shippingext')->__('Modify boxes') ?>" type="button" class="scalable save f-right" style="display: none"><span><span><span><?php echo $this->helper('sendabox_shippingext')->__('Modify boxes') ?></span></span></span></button>
+        <button id="getoffers" onclick="callController()" title="<?php echo $this->helper('sendabox_shippingext')->__('Search carriers') ?>" type="submit" class="scalable save f-right" style=""><span><span><span><?php echo $this->helper('sendabox_shippingext')->__('Search carriers') ?></span></span></span></button>
+    </div>
+</div>
+<div class="grid np" id=results-panel>
+    <div class="hor-scroll">
+        <table cellspacing="0" class="data order-tables">
+            <tbody>
+            <tr>
+                <td id="searchresults">
+                    <?php echo $this->helper('sendabox_shippingext')->__('Complete the fields above and press \'Search Carrier\' to get offers') ?>
+                </td>
+
+            </tr>
+            <tr id="summary_panel" style="display: none">
+                <td>
+                    <div class="entry-edit" >
+                    <div class="entry-edit-head">
+                        <h4 class="icon-head head-products">Summary</h4>
+                    </div>
+                <table>
+                    <thead>
+                    <tr class="headings">
+                        <th><?php echo $this->helper('sendabox_shippingext')->__('Box')?></th>
+                        <th><?php echo $this->helper('sendabox_shippingext')->__('Carrier')?></th>
+                        <th><?php echo $this->helper('sendabox_shippingext')->__('Total price')?></th>
+                    </tr>
+                    </thead>
+                    <tbody id="selected_boxes">
+                    </tbody>
+                    </table>
+                <br>
+                <br>
+                <table>
+                <tbody>
+                <tr>
+                    <td><?php echo $this->helper('sendabox_shippingext')->__('Total')?></td>
+                    <td id = "final_price"><strong>0€</strong></td><td><button id="buybtn" class="scalable" onclick="submitOrder()"><?php echo $this->helper('sendabox_shippingext')->__('Buy')?></button></td>
+                </tr>
+                <input type="hidden" name="final-price"/>
+                </tbody>
+                </table>
+
+                </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var box=1;
+    function addBox(){
+        box++;
+        var total_products_left=0;
+        var build_box='<tr class="box" id="box-'+box+'"><td class="tag">Box '+box+'</td>' +
+            '<td><input class="input-text" type="number" id="width" name="width-'+box+'" ></td>'+
+            '<td><input class="input-text" type="number" id="height" name="height-'+box+'" ></td>'+
+            '<td><input class="input-text" type="number" id="depth" name="depth-'+box+'" ></td>'+
+            '<td><input class="input-text" type="number" id="weight" name="weight-'+box+'" ></td>'+
+            '<td><table><thead>'+
+            '<th><?php echo $this->helper('sendabox_shippingext')->__('Select') ?></th>'+
+            '<th><?php echo $this->helper('sendabox_shippingext')->__('Sku') ?></th>'+
+            '<th><?php echo $this->helper('sendabox_shippingext')->__('Product') ?></th>'+
+            '<th><?php echo $this->helper('sendabox_shippingext')->__('Quantity') ?></th>'+
+            '</thead>';
+        var skus=Array();
+        <?php $i=0;foreach ($_items as $_item):?>
+        <?php if ($_item->getParentItem()) continue; else $i++;?>
+
+            var sku='<?php echo  $_item->sku ?>';
+           skus.push(sku);
+            var products='<?php echo $_item->getQtyOrdered(); ?>';
+            var products_selected=0;
+            for(var i=box-1;i>0;i--){
+                products_selected+=parseInt(jQuery(".box-"+i+"-item-"+sku+" option:selected").text());
+            }
+
+        products-=products_selected;
+        total_products_left+=products;
+        var constract='';
+        for(var i = 0;i<=products;i++){
+            constract+='<option value='+i+'>'+i+'</option>';
+        }
+
+        build_box+= '<tr>'+
+        '<td><input type="checkbox" class="box-'+box+'-item-<?php echo $_item->sku; ?>-checkbox" disabled></td>'+
+        '<td><?php echo  $_item->sku ?></td>'+
+        '<td><?php echo  $_item->getName() ?></td>'+
+        '<td><select class="box-'+box+'-item-<?php echo $_item->sku; ?>" onchange="adjustQuantities('+box+',\''+sku+'\')">'+constract+
+        '</select> / '+products+'</td>'+
+        '</tr>';
+
+        <?php endforeach; ?>
+
+        var deletefunction='deleterow('+box+',\''+skus+'\',this)';
+        build_box+='</table>'+
+        '</td>'+
+        '<td><button class="scalable removeboxbtn" onclick="'+deletefunction+'"  >Remove Box</button></td></tr>'
+
+        if(total_products_left==0){
+            box--;
+            alert('<?php echo $this->helper('sendabox_shippingext')->__('No more products left to send')?> ');
+            return;
+        }
+
+        jQuery("#boxes tr[id^=box-]:last").after(build_box);
+    }
+
+    function adjustQuantities(box,sku){
+        var totalqtyselected=0;
+        for(var i=1;i<=this.box;i++){
+            totalqtyselected+=parseInt(jQuery(".box-"+i+"-item-"+sku+" option:selected").val());
+        }
+        var totalqty=parseInt(jQuery("#item-"+sku+"-qty").val());
+        var qtyleft=totalqty-totalqtyselected;
+
+        for(var i=1;i<=this.box;i++){
+            var currentval=parseInt(jQuery(".box-"+i+"-item-"+sku+" option:selected").val());
+            if(currentval===0){
+                jQuery(".box-"+i+"-item-"+sku+"-checkbox").attr("disabled","disabled");
+            }
+            else{
+                jQuery(".box-"+i+"-item-"+sku+"-checkbox").removeAttr("disabled");
+            }
+            if(box!=i){
+
+                jQuery(".box-"+i+"-item-"+sku).find('option').remove().end();
+
+                for(var j = 0;j<=(currentval+qtyleft);j++){
+                    jQuery(".box-"+i+"-item-"+sku).append('<option value='+j+'>'+j+'</option>');
+                }
+
+                jQuery(".box-"+i+"-item-"+sku).val(currentval);
+            }
+        }
+    }
+
+    function deleterow(b,skus,i){
+        var sku=skus.split(',');
+        sku.forEach(function(sku){
+            var totalqtyselected=0;
+            for(var i=1;i<=this.box;i++){
+                if(i===b) continue;
+                totalqtyselected+=parseInt(jQuery(".box-"+i+"-item-"+sku+" option:selected").val());
+            }
+            var totalqty=parseInt(jQuery("#item-"+sku+"-qty").val());
+            var qtyleft=totalqty-totalqtyselected;
+
+            for(var i=1;i<=this.box;i++){
+                var currentval=parseInt(jQuery(".box-"+i+"-item-"+sku+" option:selected").val());
+                jQuery(".box-"+i+"-item-"+sku).find('option').remove().end();
+
+                for(var j = 0;j<=(currentval+qtyleft);j++){
+                    jQuery(".box-"+i+"-item-"+sku).append('<option value='+j+'>'+j+'</option>');
+                }
+
+                if(currentval===0){
+                    jQuery(".box-"+i+"-item-"+sku+"-checkbox").attr("disabled","disabled");
+                }
+                else{
+                    jQuery(".box-"+i+"-item-"+sku+"-checkbox").removeAttr("disabled");
+                }
+                jQuery(".box-"+i+"-item-"+sku).val(currentval);
+
+            }
+        });
+
+        var tr = jQuery(i).closest('tr');
+        tr.remove();
+        box=1;
+
+        jQuery("tr.box").each(function(){
+            box++;
+            jQuery(this).find("td.tag").html('Box '+box);
+            jQuery(this).find("input#width").attr('name',"width-"+box);
+            jQuery(this).find("input#height").attr('name',"height-"+box);
+            jQuery(this).find("input#depth").attr('name',"depth-"+box);
+            jQuery(this).find("input#weight").attr('name',"weight-"+box);
+            if(box>=b){
+                sku.forEach(function(key){
+                    jQuery(".box-"+(box+1)+"-item-"+key).attr('onchange',"adjustQuantities("+box+",'"+key+"')");
+                    jQuery(".box-"+(box+1)+"-item-"+key).attr('class',"box-"+box+"-item-"+key);
+                });
+            }
+        });
+
+        if(jQuery("#result-box-"+b).length>0){
+            jQuery("#result-box-"+b).remove();
+        }
+
+
+
+    }
+    function callController(){
+
+        jQuery("input[name=boxes]").val(box);
+        new Ajax.Request("<?php echo $this->getUrl('sendabox/adminhtml_ajax/index') ?>", {
+            method: 'Post',
+            parameters: jQuery("input,select").serialize(),
+            onComplete: function(data){
+                var json=jQuery.parseJSON(data.responseText);
+                if(json["ErrorMsg"]){
+                    alert(json["ErrorMsg"]);
+                    return null;
+                }
+                jQuery("#shipping_city,#shipping_province,#shipping_zip,#destination_city,#destination_province,#destination_country,#destination_zip,[name^=width-],[name^=height-],[name^=depth-],[name^=weight-]").attr("readonly","readonly").css("background-color","#C0C0C0 ");
+                jQuery("#unblock").css("display","block");
+                jQuery("#getoffers").css("display","none");
+                jQuery(".removeboxbtn").css("display","none");
+                jQuery("#addBox,#destination_country").attr("disabled","disabled");
+
+                jQuery("#results-panel input,#results-panel button").removeAttr("disabled");
+                var length=Object.keys(json).length;
+                if(length===0) return null;
+
+                for(var i=0;i<length;i++){
+                    var html_builder='<table>';
+                    html_builder+='<thead>';
+                    html_builder+='<tr class=\"headings\">';
+                    html_builder+='<th colspan="6"><strong><?php echo $this->helper('sendabox_shippingext')->__('Box') ?>'+Object.keys(json)[i]+'</strong></th>';
+                    html_builder+='</tr>';
+                    html_builder+='<tr class="headings">';
+                    html_builder+='<th><strong><?php echo $this->helper('sendabox_shippingext')->__('Choose carrier') ?></strong></th>';
+                    html_builder+='<th><strong><?php echo $this->helper('sendabox_shippingext')->__('Carrier') ?></strong></th>';
+                    html_builder+='<th><strong><?php echo $this->helper('sendabox_shippingext')->__('Base price') ?></strong></th>';
+                    html_builder+='<th><strong><?php echo $this->helper('sendabox_shippingext')->__('Available services') ?></strong></th>';
+                    html_builder+='<th><strong><?php echo $this->helper('sendabox_shippingext')->__('Select services') ?></strong></th>';
+                    html_builder+='<th><strong><?php echo $this->helper('sendabox_shippingext')->__('Total price') ?></strong></th>';
+                    html_builder+='</tr></thead>';
+                    for(var j=0;j<json[Object.keys(json)[i]].offers.length;j++){
+                        html_builder+='<tr>';
+                        html_builder+='<td><input type=hidden id="box_'+Object.keys(json)[i]+'_carrier_'+json[Object.keys(json)[i]].offers[j].idcarrier+'_idshippingdetail" name="box_'+Object.keys(json)[i]+'_carrier_'+json[Object.keys(json)[i]].offers[j].idcarrier+'_idshippingdetail" value="'+json[Object.keys(json)[i]].offers[j].idshippingdetail+'">';
+                        html_builder+='<input type=hidden id="box_'+Object.keys(json)[i]+'_carrier_'+json[Object.keys(json)[i]].offers[j].idcarrier+'_idpricelist" name="box_'+Object.keys(json)[i]+'_carrier_'+json[Object.keys(json)[i]].offers[j].idcarrier+'_idpricelist" value="'+json[Object.keys(json)[i]].offers[j].idpricelist+'">';
+                        html_builder+='<input onclick=\'addToSummary('+Object.keys(json)[i]+','+json[Object.keys(json)[i]].offers[j].idcarrier+')\' type="radio" name="box_'+Object.keys(json)[i]+'" id="box_'+Object.keys(json)[i]+'_carrier_'+json[Object.keys(json)[i]].offers[j].idcarrier+'" value="'+json[Object.keys(json)[i]].offers[j].idcarrier+'"></td>';
+                        html_builder+='<td  id="box_'+Object.keys(json)[i]+'_carrier_name_'+json[Object.keys(json)[i]].offers[j].idcarrier+'">'+json[Object.keys(json)[i]].offers[j].carrier+'</td>';
+                        html_builder+='<td>'+json[Object.keys(json)[i]].offers[j].price+'€</td>';
+                        var availableservices="";
+                        for(var k=0;k<json[Object.keys(json)[i]].offers[j].services.length;k++){
+                            availableservices+=json[Object.keys(json)[i]].offers[j].services[k]+" ";
+                        }
+                        html_builder+='<td>'+availableservices+'</td>';
+                        html_builder+='<td><button onclick=\'callServices('+Object.keys(json)[i]+','+json[Object.keys(json)[i]].offers[j].idcarrier+')\' class=\"scalable\">Add services</button></td>';
+                        html_builder+='<td id="box_'+Object.keys(json)[i]+'_carrier_price_'+json[Object.keys(json)[i]].offers[j].idcarrier+'\"><strong>'+json[Object.keys(json)[i]].offers[j].price.replace(',','.')+'€</strong></td>';
+                        html_builder+='<tr style="display: none" id="box_'+Object.keys(json)[i]+'_services_'+json[Object.keys(json)[i]].offers[j].idcarrier+'"></tr>';
+                        html_builder+='</tr>';
+                    }
+                    html_builder+='</table>';
+
+                    if(jQuery("#result-box-"+Object.keys(json)[i]).length>0){
+                        jQuery("#result-box-"+Object.keys(json)[i]).html(html_builder);
+                    }
+                    else {
+                        jQuery("#searchresults").append("<div id='result-box-"+Object.keys(json)[i]+"'>"+html_builder+"</div>");
+
+                    }
+
+                    jQuery("#summary-box-"+Object.keys(json)[i]).remove();
+
+                }
+
+
+            }
+        });
+//        var validateform= new varienForm('edit_form', true);
+//        if (!validateform.validator.validate())
+//        {
+//            alert("<?php //echo $this->helper('sendabox_shippingext')->__('Complete all the required fields') ?>//");
+//            return;
+//
+//        }
+
+
+    }
+
+    function unblock(){
+        jQuery("#shipping_city,#shipping_province,#shipping_zip,#destination_city,#destination_province,#destination_country,#destination_zip,[name^=width-],[name^=height-],[name^=depth-],[name^=weight-]").removeAttr("readonly").css("background-color","#ffffff ");;
+        jQuery("#unblock").css("display","none");
+        jQuery(".removeboxbtn").css("display","block");
+        jQuery("#getoffers").css("display","block");
+        jQuery("#addBox,#destination_country").removeAttr("disabled");
+        jQuery("#results-panel input,#results-panel button").attr("disabled","disabled");
+
+    }
+    function callServices(b,i){
+        new Ajax.Request("<?php echo $this->getUrl('sendabox/adminhtml_ajax/services') ?>", {
+            method: 'Post',
+            parameters: {b,i},
+            onComplete: function(data) {
+                jQuery("#box_"+b+"_services_"+i).html(data.responseText).show('slow');
+            }
+        });
+    }
+
+    function servicecheck(box,carrier,service){
+        var getserviceprice=parseFloat(jQuery("#box_"+box+"_serviceprice_"+carrier+"_"+service).html().replace('€',''));
+        var gettotalprice=parseFloat(jQuery("#box_"+box+"_carrier_price_"+carrier).html().replace('<strong>','').replace('€</strong>',''));
+        if(jQuery("#box_"+box+"_service_"+carrier+"_"+service).is(':checked')){
+            var newprice=Math.round((gettotalprice+getserviceprice)*100)/100;
+            jQuery("#box_"+box+"_carrier_price_"+carrier).html('<strong>'+newprice+'€</strong>');
+        }
+        else{
+            var newprice=Math.round((gettotalprice-getserviceprice)*100)/100;
+            jQuery("#box_"+box+"_carrier_price_"+carrier).html('<strong>'+newprice+'€</strong>');
+        }
+
+        if(jQuery('#box_'+box+'_final_price').length>0 && jQuery('#box_'+box+'_carrier_'+carrier).is(':checked')){
+            var totalprice=parseFloat(jQuery('#final_price').html().replace('<strong>','').replace('</strong>',''));
+            var currentprice=parseFloat(jQuery('#box_'+box+'_final_price').html().replace('<strong>','').replace('</strong>',''));
+            totalprice-=currentprice;
+           jQuery('#box_'+box+'_final_price').html(jQuery("#box_"+box+"_carrier_price_"+carrier).html());
+            var newprice=parseFloat(jQuery("#box_"+box+"_carrier_price_"+carrier).html().replace('<strong>','').replace('€</strong>',''));
+            totalprice+=newprice;
+            jQuery('#final_price').html('<strong>'+Math.round(totalprice*100)/100+'€</strong>');
+
+        }
+    }
+
+    function updateInsurance(box,idcarrier,service){
+
+        var price=0;
+        var ass=jQuery("#box_"+box+"_service_ins_"+idcarrier+"_"+service).val();
+
+            if (ass > 0 && ass <= 250) {
+                price = 2.95;
+            }
+            else if (ass > 250 && ass <= 500) {
+                price = 8;
+            }
+            else if (ass > 500 && ass <= 1000) {
+                price = 18;
+            }
+            else if (ass > 1000 && ass <= 2500) {
+                price = 48;
+            }
+        var currentprice=parseFloat(jQuery("#box_"+box+"_serviceprice_"+idcarrier+"_"+service).html().replace('€',''));
+        if(currentprice!=price){
+            jQuery("#box_"+box+"_serviceprice_"+idcarrier+"_"+service).html(price+'€');
+            var gettotalprice=parseFloat(jQuery("#box_"+box+"_carrier_price_"+idcarrier).html().replace('<strong>','').replace('€</strong>',''));
+            if(jQuery("#box_"+box+"_service_"+idcarrier+"_"+service).is(':checked')){
+                var newprice=Math.round(((gettotalprice-currentprice)+price)*100)/100;
+                jQuery("#box_"+box+"_carrier_price_"+idcarrier).html('<strong>'+newprice+'€</strong>');
+                if(jQuery('#box_'+box+'_final_price').length>0 && jQuery('#box_'+box+'_carrier_'+idcarrier).is(':checked')){
+                    var totalprice=parseFloat(jQuery('#final_price').html().replace('<strong>','').replace('</strong>',''));
+                    var currentprice=parseFloat(jQuery('#box_'+box+'_final_price').html().replace('<strong>','').replace('</strong>',''));
+                    totalprice-=currentprice;
+                    jQuery("#box_"+box+"_final_price").html(jQuery("#box_"+box+"_carrier_price_"+idcarrier).html());
+                    var newprice=parseFloat(jQuery("#box_"+box+"_carrier_price_"+idcarrier).html().replace('<strong>','').replace('€</strong>',''));
+                    totalprice+=newprice;
+                    jQuery('#final_price').html('<strong>'+Math.round(totalprice*100)/100+'€</strong>');
+                }
+            }
+        }
+    }
+
+    function updateContrassegno(box,idcarrier,service){
+
+        var price=0;
+        var con=jQuery("#box_"+box+"_service_con_"+idcarrier+"_"+service).val();
+
+        if (con>0 && con < 516.47) {
+            price = 2.48;
+        }
+        else if (con >= 516.47 && con<1000) {
+            price = Math.round((2.48 + (0.0249 * (con - 516.46)))*100)/100;
+
+        }
+
+        var currentprice=parseFloat(jQuery("#box_"+box+"_serviceprice_"+idcarrier+"_"+service).html().replace('€',''));
+        if(currentprice!=price){
+            jQuery("#box_"+box+"_serviceprice_"+idcarrier+"_"+service).html(price+'€');
+            var gettotalprice=parseFloat(jQuery("#box_"+box+"_carrier_price_"+idcarrier).html().replace('<strong>','').replace('€</strong>',''));
+            if(jQuery("#box_"+box+"_service_"+idcarrier+"_"+service).is(':checked')){
+                var newprice=Math.round(((gettotalprice-currentprice)+price)*100)/100;
+                jQuery("#box_"+box+"_carrier_price_"+idcarrier).html('<strong>'+newprice+'€</strong>');
+                if(jQuery('#box_'+box+'_final_price').length>0 && jQuery('#box_'+box+'_carrier_'+idcarrier).is(':checked')){
+                    var totalprice=parseFloat(jQuery('#final_price').html().replace('<strong>','').replace('</strong>',''));
+                    var currentprice=parseFloat(jQuery('#box_'+box+'_final_price').html().replace('<strong>','').replace('</strong>',''));
+                    totalprice-=currentprice;
+                    jQuery("#box_"+box+"_final_price").html(jQuery("#box_"+box+"_carrier_price_"+idcarrier).html());
+                    var newprice=parseFloat(jQuery("#box_"+box+"_carrier_price_"+idcarrier).html().replace('<strong>','').replace('€</strong>',''));
+                    totalprice+=newprice;
+                    jQuery('#final_price').html('<strong>'+Math.round(totalprice*100)/100+'€</strong>');
+                }
+            }
+        }
+    }
+
+    function addToSummary(box,carrier){
+        jQuery('#summary_panel').show('slow');
+        var totalprice=parseFloat(jQuery('#final_price').html().replace('<strong>','').replace('</strong>',''));
+        if(jQuery('#selected_boxes tr#summary-box-'+box+'').length> 0){
+            var currentprice=parseFloat(jQuery('#box_'+box+'_final_price').html().replace('<strong>','').replace('</strong>',''));
+            totalprice-=currentprice;
+            jQuery('#selected_boxes tr#summary-box-'+box+'').remove();
+        }
+
+        jQuery('#selected_boxes').append('<tr id=summary-box-'+box+'>'+
+                                        '<td><?php echo $this->helper('sendabox_shippingext')->__('Box') ?> '+box+'</td>'+
+                                        '<td>'+jQuery('#box_'+box+'_carrier_name_'+carrier).html()+'</td>'+
+                                        '<td id="box_'+box+'_final_price">'+jQuery('#box_'+box+'_carrier_price_'+carrier).html()+'</td>'+
+                                        '<input type=\'hidden\' name="box_'+box+'_final_price" value='+jQuery('#box_'+box+'_carrier_price_'+carrier).html().replace('<strong>','').replace('</strong>','').replace('€','')+'>'+
+                                        '</tr>');
+
+        totalprice+=parseFloat(jQuery('#box_'+box+'_carrier_price_'+carrier).html().replace('<strong>','').replace('</strong>',''));
+        jQuery('#final_price').html('<strong>'+Math.round(totalprice*100)/100+'€</strong>')
+    }
+
+    function populateFields(){
+        new Ajax.Request("<?php echo $this->getUrl('sendabox/adminhtml_ajax/populate') ?>", {
+            method: 'Post',
+            parameters: jQuery("select#shipping_agenda").serialize(),
+            onComplete: function (data) {
+                var json = jQuery.parseJSON(data.responseText);
+                jQuery("#shipping_name").val(json.name);
+                jQuery("#shipping_surname").val(json.surname);
+                jQuery("#shipping_co").val(json.co);
+                jQuery("#shipping_address").val(json.address);
+                jQuery("#shipping_streetnumber").val(json.street_number);
+                jQuery("#shipping_city").val(json.city);
+                jQuery("#shipping_province").val(json.province);
+                jQuery("#shipping_zip").val(json.zip);
+                jQuery("#shipping_tel").val(json.tel);
+                jQuery("#shipping_email").val(json.email);
+
+            }
+        });
+    }
+
+    function validateInput(i){
+        var key = event.keyCode || event.which;
+        if (key == 37 || key == 39 || key == 8 || key == 46) {
+            return;
+        }
+        if (key == 44) {
+            jQuery(i).val(jQuery(i).val() + '.');
+            event.preventDefault();
+        }
+
+        var regex = new RegExp("^[0-9\.,]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+
+
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    function closePanel(b,i){
+        jQuery("#box_"+b+"_services_"+i).hide('slow');
+    }
+
+    function submitOrder(){
+        var confirm=window.confirm('Confirm your order?');
+        if(!confirm){
+            return;
+        }
+
+        jQuery("#destination_country").removeAttr("disabled");
+        jQuery("input[name=final-price]").val(jQuery('#final_price').html().replace('<strong>','').replace('</strong>','').replace('€',''));
+
+        new Ajax.Request("<?php echo $this->getUrl('sendabox/adminhtml_ajax/order') ?>", {
+            method: 'Post',
+            parameters: jQuery("input,select#destination_country").serialize(),
+            onComplete: function (data) {
+                var json = jQuery.parseJSON(data.responseText);
+                if (json["ErrorMsg"]) {
+                    alert(json["ErrorMsg"]);
+                    return null;
+                }
+
+                window.location="<?php echo $this->getUrl('sendabox/adminhtml_order/index') ?>"
+
+            }
+        });
+
+    }
+</script>

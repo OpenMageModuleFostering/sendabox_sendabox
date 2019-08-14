@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<shipment>
+  <departure>
+    <name>Efstathios</name>
+    <surname>Kapaniaris</surname>
+    <co/>
+    <address>Via Ippodromo</address>
+    <streetnumber>9</streetnumber>
+    <city>Milano</city>
+    <province>MI</province>
+    <zip>20151</zip>
+    <phone>3480068531</phone>
+    <email>stathis.kapaniaris@gmail.com</email>
+  </departure>
+  <destination>
+    <name>Gogi</name>
+    <surname>Cooper</surname>
+    <co/>
+    <address>30th St</address>
+    <streetnumber>sfda</streetnumber>
+    <city>New York</city>
+    <province>New York</province>
+    <country>19</country>
+    <zip>10450</zip>
+    <phone>1234500001</phone>
+    <email/>
+  </destination>
+  <boxes>
+    <box id="1">
+      <width value="2"/>
+      <height value="2"/>
+      <depth value="2"/>
+      <weight value="2"/>
+    </box>
+  </boxes>
+</shipment>

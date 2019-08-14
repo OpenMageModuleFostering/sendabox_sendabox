@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <sendabox module="sendabox_shippingext" translate="title">
+            <title>SendABox</title>
+            <sort_order>100</sort_order>
+            <children>
+                <shipment module="sendabox_shippingext" translate="title">
+                    <title>Manage Shipments</title>
+                    <sort_order>1</sort_order>
+                    <action>sendabox/adminhtml_shipment</action>
+                </shipment>
+                <orders module="sendabox_shippingext" translate="title">
+                    <title>Orders</title>
+                    <sort_order>2</sort_order>
+                    <action>sendabox/adminhtml_order</action>
+                </orders>
+                <configuration module="sendabox_shippingext" translate="title">
+                    <title>Settings</title>
+                    <sort_order>3</sort_order>
+                    <action>adminhtml/system_config/edit/section/sendabox_settings</action>
+                </configuration>
+            </children>
+        </sendabox>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <sendabox translate="title" module="sendabox_shippingext">
+                        <title>Sendabox</title>
+                        <sort_order>10</sort_order>
+                        <children>
+                            <shipment>
+                                <title>Manage Shipments</title>
+                            </shipment>
+                            <orders>
+                                <title>Orders</title>
+                            </orders>
+                            <configuration>
+                                <title>Settings</title>
+                            </configuration>
+                        </children>
+                    </sendabox>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
