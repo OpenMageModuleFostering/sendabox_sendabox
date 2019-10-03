@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Sendabox_Sendabox",
+    "name": "OpenMageModuleFostering\/Sendabox_Sendabox",
     "type": "magento-module",
     "license": "Open-Software-License-",
     "homepage": "",
     "description": "Shipping extension for Sendabox.it",
     "authors": [
-    {
-        "name": "Stathis Kapaniaris",
-        "email": "stathis.kapaniaris@gmail.com"
-    }
-],
+        {
+            "name": "Stathis Kapaniaris",
+            "email": "stathis.kapaniaris@gmail.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
